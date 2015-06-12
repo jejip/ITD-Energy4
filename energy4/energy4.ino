@@ -19,16 +19,16 @@ unsigned long lastTimeSent = 0;
 //incoming values
 bool stepper1_enable = 0;
 int stepper1_pos = 0;
-int stepper1_speed = 0;
+int stepper1_speed = 700;
 
 bool stepper2_enable = 0;
 int stepper2_pos = 0;
-int stepper2_speed = 0;
+int stepper2_speed = 700;
 
 int led_pos = 0;
 int led_speed = 0;
 int led_hue = 0;
-int led_bri = 0;
+int led_state = 0;
 
 // LEDS
 
@@ -93,14 +93,13 @@ void setup() {
   //setup stepper
   AFMS.begin(); // Start the bottom shield
    
-  stepper1.setMaxSpeed(1000);
-  stepper1.setAcceleration(500);
+  stepper1.setMaxSpeed(1000); //maximum is 1420
+  stepper1.setAcceleration(500); //not really a maximum
     
-  stepper2.setMaxSpeed(100);
+  stepper2.setMaxSpeed(700);
   stepper2.setAcceleration(300);
   
 }
-
 
 
 void loop() {
@@ -108,21 +107,18 @@ void loop() {
   readIncoming();
   
   //show LED
-  sinelon(led);
+  switch (led_state) {
+    case 10:
+      sinelon(led_pos, led_hue);
+    case 11:
+      juggle();
+    case 12:
+      sampleled();
+  }
   FastLED.show();
 
   //move stepper
-  if (stepper1.distanceToGo() == 0)
-    {
-      stepper1.moveTo(stepper);
-    }
-  stepper1.run();
-  
-  if (stepper2.distanceToGo() == 0)
-    {
-      stepper2.moveTo(stepper);
-    }
-  stepper2.run();
+  movesteppers();
   
   //Send values from the analog inputs back
   //sendvalues();

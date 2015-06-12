@@ -12,11 +12,38 @@ void readIncoming() {
     switch (incoming) {
       case 0:
         value = Serial.read();
-        led = int(value);
-        break;
+        stepper1_enable = map(value, 10, 11, 0, 1); //10 is off and 11 is on
+        Serial.println(stepper1_enable);
+        //stepper1_enable = int(value);
       case 1:
         value = Serial.read();
-        stepper = int(value);
+        stepper1_pos = map(value, 10, 255, 0, 500);
+        //stepper1_pos = int(value);
+        break;
+      case 2:
+        value = Serial.read();
+        stepper1_speed = int(value);
+      case 3:
+        value = Serial.read();
+        stepper2_enable = int(value);
+      case 4:
+        value = Serial.read();
+        stepper2_pos = int(value);
+      case 5:
+        value = Serial.read();
+        stepper2_speed = int(value);
+      case 6:
+        value = Serial.read();
+        led_pos = map(value, 10, 255, 0, 30);
+      case 7:
+        value = Serial.read();
+        led_speed = int(value);
+      case 8:
+        value = Serial.read();
+        led_hue = map(value, 10, 255, 0, 255);
+      case 9:
+        value = Serial.read();
+        led_state = int(value);
     }  
   }
 }

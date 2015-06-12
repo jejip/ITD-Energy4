@@ -1,11 +1,12 @@
 //functions for the leds, different effects and patterns for different uses
 
+
 //move a coloured dots with a trail
-void sinelon(int i)
+void sinelon(int pos, int hue)
 {
   // a colored dot sweeping back and forth, with fading trails
   fadeToBlackBy( leds, NUM_LEDS, 1);
-  leds[i] += CHSV( 0, 255, 255);
+  leds[pos] += CHSV(hue, 255, 255);
 }
 
 //show quick flashes of a colour
