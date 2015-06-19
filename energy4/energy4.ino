@@ -35,11 +35,13 @@ int num_identifiers = 10; //value for the number of identifiers
 bool stepper1_enable_last = 1; //store last value to poll status of steppers, starts as on
 bool stepper2_enable_last = 1;
 
+int rotary = 0;
+
 // LEDS
 
 #include "FastLED.h"                                          // FastLED library. Preferably the latest copy of FastLED 2.1.
 
-#define LED_DT 3                                             // Serial data pin
+#define LED_DT 5                                             // Serial data pin
 #define COLOR_ORDER GRB                                       // It's GRB for WS2812B
 #define LED_TYPE WS2812B                                       // What kind of strip are you using (APA102, WS2801 or WS@2812B
 #define NUM_LEDS 30                                           // Number of LED's
@@ -54,6 +56,11 @@ struct CRGB leds[NUM_LEDS];                                   // Initialize our 
 #include "Adafruit_GFX.h"
 
 Adafruit_7segment matrix = Adafruit_7segment();
+
+// rotary encoder
+
+#include <Encoder.h>
+#include <TimerOne.h>
 
 // STEPPER MOTORS
 
@@ -106,6 +113,9 @@ void setup() {
   //attach segment display
   matrix.begin(0x71); // added a jumper to change the default address
 
+  //rotary encoder
+  encoder.Timer_init();
+
   //setup stepper
   AFMS.begin(); // Start the bottom shield
    
@@ -139,6 +149,16 @@ void loop() {
 
   //move stepper
   movesteppers();
+  
+  //receive rotary encoder values
+  if (encoder.rotate_flag ==1)
+  {
+    if (encoder.direct==0)
+    { rotary--;}
+     else
+     {rotary++;}
+    encoder.rotate_flag =0;
+  }
   
   //Send values from the analog inputs back
   sendvalues();

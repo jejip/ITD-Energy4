@@ -66,7 +66,7 @@ void sendvalues() {
     Serial.print(" ");
     Serial.print(sensorValue1);
     Serial.print(" ");
-    Serial.print(stepper2_enable);
+    Serial.print(rotary);
     Serial.print("\n");
     lastTimeSent = millis();
   }
