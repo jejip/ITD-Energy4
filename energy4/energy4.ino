@@ -32,8 +32,8 @@ int led_state = 0;
 
 int num_identifiers = 10; //value for the number of identifiers
 
-    bool stepper1_enable_last = 1; //store last value to poll status of steppers, starts as on
-    bool stepper2_enable_last = 1;
+bool stepper1_enable_last = 1; //store last value to poll status of steppers, starts as on
+bool stepper2_enable_last = 1;
 
 // LEDS
 
@@ -124,11 +124,11 @@ void loop() {
   
   //show LED
   switch (led_state) {
-    case 10:
+    case 0:
       sinelon(led_pos, led_hue);
-    case 11:
+    case 1:
       juggle();
-    case 12:
+    case 2:
       sampleled();
   }
   FastLED.show();
@@ -141,6 +141,6 @@ void loop() {
   movesteppers();
   
   //Send values from the analog inputs back
-  //sendvalues();
+  sendvalues();
 
 }

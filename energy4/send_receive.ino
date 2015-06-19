@@ -12,12 +12,12 @@ void readIncoming() {
     switch (incoming) {
       case 0:
         value = Serial.read();
-        stepper1_enable = map(value, 10, 11, 0, 1); //10 is off and 11 is on
+        stepper1_enable = map(value, num_identifiers, num_identifiers+1, 0, 1); //10 is off and 11 is on
         Serial.println(stepper1_enable);
         //stepper1_enable = int(value);
       case 1:
         value = Serial.read();
-        stepper1_pos = map(value, 10, 255, 0, 500);
+        stepper1_pos = map(value, num_identifiers, 255, 0, 500);
         //stepper1_pos = int(value);
         break;
       case 2:
@@ -25,7 +25,7 @@ void readIncoming() {
         stepper1_speed = int(value);
       case 3:
         value = Serial.read();
-        stepper2_enable = map(value, 10, 11, 0, 1); //10 is off and 11 is on
+        stepper2_enable = map(value, num_identifiers, num_identifiers+1, 0, 1); //10 is off and 11 is on
       case 4:
         value = Serial.read();
         stepper2_pos = int(value);
@@ -34,18 +34,19 @@ void readIncoming() {
         stepper2_speed = int(value);
       case 6:
         value = Serial.read();
-        led_pos = map(value, 10, 255, 0, 30);
+        led_pos = map(value, num_identifiers, 255, 0, 30);
       case 7:
         value = Serial.read();
         led_speed = map(value, num_identifiers, 255, 0, 9999);
       case 8:
         value = Serial.read();
-        led_hue = map(value, 10, 255, 0, 255);
+        led_hue = map(value, num_identifiers, 255, 0, 255);
       case 9:
         value = Serial.read();
-        led_state = int(value);
+        led_state = value - num_identifiers;
+        //led_state = int(value);
       default:
-        Serial.read();
+        Serial.read(); //just do nothing with the incoming value if it's not an identifier
     }  
   }
 }
@@ -64,6 +65,8 @@ void sendvalues() {
     Serial.print(sensorValue0);
     Serial.print(" ");
     Serial.print(sensorValue1);
+    Serial.print(" ");
+    Serial.print(stepper2_enable);
     Serial.print("\n");
     lastTimeSent = millis();
   }
