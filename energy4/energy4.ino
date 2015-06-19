@@ -17,6 +17,9 @@ int sensorValue1 = 0;
 unsigned long lastTimeSent = 0;
 
 //incoming values
+byte incoming = 0;
+byte value = 0;
+  
 bool stepper1_enable = 0;
 int stepper1_pos = 0;
 int stepper1_speed = 700;
@@ -35,6 +38,9 @@ int num_identifiers = 10; //value for the number of identifiers
 bool stepper1_enable_last = 1; //store last value to poll status of steppers, starts as on
 bool stepper2_enable_last = 1;
 
+int led_state_last = 0;
+
+int rotary = 0; //TODO: how long before this int is filled??
 
 // LEDS
 
@@ -119,7 +125,7 @@ void setup() {
   AFMS.begin(); // Start the bottom shield
    
   stepper1.setMaxSpeed(1000); //maximum is 1420
-  stepper1.setAcceleration(500); //not really a maximum
+  stepper1.setAcceleration(800); //not really a maximum
     
   stepper2.setMaxSpeed(700);
   stepper2.setAcceleration(300);
@@ -132,9 +138,23 @@ void loop() {
   readIncoming();
   
   //show LED
+
+    switch (led_state) {
+      case 1:
+        juggle();
+        break;
+      case 2:
+        sinelon(led_pos, led_hue);
+        break;
+      case 3:
+        sampleled();
+        break;
+    }
+//  sinelon(led_pos, led_hue);
   FastLED.show();
 
   //show segmented display
+  matrix.println(rotary);
   matrix.writeDisplay();
 
   //move stepper
