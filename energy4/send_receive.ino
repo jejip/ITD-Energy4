@@ -25,7 +25,7 @@ void readIncoming() {
         stepper1_speed = int(value);
       case 3:
         value = Serial.read();
-        stepper2_enable = int(value);
+        stepper2_enable = map(value, 10, 11, 0, 1); //10 is off and 11 is on
       case 4:
         value = Serial.read();
         stepper2_pos = int(value);
@@ -37,13 +37,15 @@ void readIncoming() {
         led_pos = map(value, 10, 255, 0, 30);
       case 7:
         value = Serial.read();
-        led_speed = int(value);
+        led_speed = map(value, num_identifiers, 255, 0, 9999);
       case 8:
         value = Serial.read();
         led_hue = map(value, 10, 255, 0, 255);
       case 9:
         value = Serial.read();
         led_state = int(value);
+      default:
+        Serial.read();
     }  
   }
 }

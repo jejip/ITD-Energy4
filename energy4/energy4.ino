@@ -30,6 +30,11 @@ int led_speed = 0;
 int led_hue = 0;
 int led_state = 0;
 
+int num_identifiers = 10; //value for the number of identifiers
+
+    bool stepper1_enable_last = 1; //store last value to poll status of steppers, starts as on
+    bool stepper2_enable_last = 1;
+
 // LEDS
 
 #include "FastLED.h"                                          // FastLED library. Preferably the latest copy of FastLED 2.1.
@@ -41,6 +46,14 @@ int led_state = 0;
 
 struct CRGB leds[NUM_LEDS];                                   // Initialize our LED array.
 #define BRIGHTNESS 150                                          // 
+
+
+// 7 Segment display
+
+#include "Adafruit_LEDBackpack.h"
+#include "Adafruit_GFX.h"
+
+Adafruit_7segment matrix = Adafruit_7segment();
 
 // STEPPER MOTORS
 
@@ -90,6 +103,9 @@ void setup() {
   LEDS.addLeds<LED_TYPE, LED_DT, COLOR_ORDER>(leds, NUM_LEDS);  // Use this for WS2801 or APA102
   FastLED.setBrightness(BRIGHTNESS);
 
+  //attach segment display
+  matrix.begin(0x71); // added a jumper to change the default address
+
   //setup stepper
   AFMS.begin(); // Start the bottom shield
    
@@ -116,6 +132,10 @@ void loop() {
       sampleled();
   }
   FastLED.show();
+
+  //show segmented display
+  matrix.println(led_speed);
+  matrix.writeDisplay();
 
   //move stepper
   movesteppers();

@@ -1,9 +1,7 @@
 void movesteppers() {
     
     //enable or disable stepper motors when it gets the command
-    bool stepper1_enable_last = 0;
-    bool stepper2_enable_last = 0;
-        
+    
     if (stepper1_enable != stepper1_enable_last) { //only fire when the state has been changed
       if (stepper1_enable) {
         stepper1.enableOutputs(); 
@@ -14,7 +12,15 @@ void movesteppers() {
       stepper1_enable_last = stepper1_enable; //set the last state to the current state
     }
     
-    //...duplicate for 2nd stepper motor
+    if (stepper2_enable != stepper2_enable_last) { //only fire when the state has been changed
+      if (stepper2_enable) {
+        stepper2.enableOutputs(); 
+      }
+      else {
+        stepper2.disableOutputs();
+      }
+      stepper2_enable_last = stepper2_enable; //set the last state to the current state
+    }
     
   
   //move stepper 1
