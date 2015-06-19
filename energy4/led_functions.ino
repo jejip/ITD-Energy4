@@ -9,6 +9,13 @@ void sinelon(int pos, int hue)
   leds[pos] += CHSV(hue, 255, 255);
 }
 
+void sine2(int pos)
+{
+  // a colored dot sweeping back and forth, with fading trails
+  fadeToBlackBy( leds, NUM_LEDS, 1);
+  leds[pos] += CHSV(0, 255, 255);
+}
+
 //show quick flashes of a colour
 //void confetti() 
 //{
@@ -46,6 +53,7 @@ void sampleled()
   int pos = beatsin16(13,0,NUM_LEDS);
   leds[pos] += CHSV( 100, 255, 192);
 }
+
 
 
 //void noise16() {

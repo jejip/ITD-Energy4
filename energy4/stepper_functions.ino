@@ -2,6 +2,8 @@ void movesteppers() {
     
     //enable or disable stepper motors when it gets the command
     
+    // doesn't work yet: enabling or disabling outputs only puts the stepper to its max value....
+    
     if (stepper1_enable != stepper1_enable_last) { //only fire when the state has been changed
       if (stepper1_enable) {
         stepper1.enableOutputs(); 

@@ -35,7 +35,6 @@ int num_identifiers = 10; //value for the number of identifiers
 bool stepper1_enable_last = 1; //store last value to poll status of steppers, starts as on
 bool stepper2_enable_last = 1;
 
-int rotary = 0;
 
 // LEDS
 
@@ -133,18 +132,9 @@ void loop() {
   readIncoming();
   
   //show LED
-  switch (led_state) {
-    case 0:
-      sinelon(led_pos, led_hue);
-    case 1:
-      juggle();
-    case 2:
-      sampleled();
-  }
   FastLED.show();
 
   //show segmented display
-  matrix.println(led_speed);
   matrix.writeDisplay();
 
   //move stepper
