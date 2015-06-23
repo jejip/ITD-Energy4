@@ -1,29 +1,23 @@
 void movesteppers() {
     
-    //enable or disable stepper motors when it gets the command
+    //disable stepper motors when it gets the command
+    //motors will enable automatically when they receive a move command.
     
-    // doesn't work yet: enabling or disabling outputs only puts the stepper to its max value....
-    
-    if (stepper1_enable != stepper1_enable_last) { //only fire when the state has been changed
-      if (stepper1_enable) {
-        stepper1.enableOutputs(); 
-      }
-      else {
-        stepper1.disableOutputs();
-      }
+    if (stepper1_enable != stepper1_enable_last) { //poll for changes, then disable motor on change 
+      if (stepper1_enable) 
+        myStepper1->release();
+      
       stepper1_enable_last = stepper1_enable; //set the last state to the current state
     }
     
     if (stepper2_enable != stepper2_enable_last) { //only fire when the state has been changed
-      if (stepper2_enable) {
-        stepper2.enableOutputs(); 
-      }
-      else {
-        stepper2.disableOutputs();
-      }
+      if (stepper2_enable) 
+        myStepper2->release();
+     
       stepper2_enable_last = stepper2_enable; //set the last state to the current state
     }
     
+   // move steppers
   
   //move stepper 1
   if (stepper1.distanceToGo() == 0) {//only give off the command to move when the destination has been reached

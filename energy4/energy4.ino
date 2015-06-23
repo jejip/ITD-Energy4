@@ -60,11 +60,13 @@ struct CRGB leds[NUM_LEDS];                                   // Initialize our 
 #include "Adafruit_LEDBackpack.h"
 #include "Adafruit_GFX.h"
 
-Adafruit_7segment matrix = Adafruit_7segment();
+Adafruit_7segment matrix = Adafruit_7segment();            // attaches I2C
+
+#define Wh_led 4                                            // attaches leds to pin 4
 
 // rotary encoder
 
-#include <Encoder.h>
+#include <Encoder.h>                                        //attaches to pin 2 and 3
 #include <TimerOne.h>
 
 // STEPPER MOTORS
@@ -117,6 +119,7 @@ void setup() {
 
   //attach segment display
   matrix.begin(0x71); // added a jumper to change the default address
+  pinMode(Wh_led, OUTPUT); //leds which show unit as output
 
   //rotary encoder
   encoder.Timer_init();
@@ -161,6 +164,7 @@ void loop() {
   movesteppers();
   
   //receive rotary encoder values
+  // one full neo turn is 400 steps (+ -)
   if (encoder.rotate_flag ==1)
   {
     if (encoder.direct==0)
