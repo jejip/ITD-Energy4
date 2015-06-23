@@ -38,10 +38,6 @@ int num_identifiers = 10; //value for the number of identifiers
 bool stepper1_enable_last = 1; //store last value to poll status of steppers, starts as on
 bool stepper2_enable_last = 1;
 
-int led_state_last = 0;
-
-int rotary = 0; //TODO: how long before this int is filled??
-
 // LEDS
 
 #include "FastLED.h"                                          // FastLED library. Preferably the latest copy of FastLED 2.1.
@@ -63,6 +59,9 @@ struct CRGB leds[NUM_LEDS];                                   // Initialize our 
 Adafruit_7segment matrix = Adafruit_7segment();            // attaches I2C
 
 #define Wh_led 4                                            // attaches leds to pin 4
+
+int rotary = 0;
+int Wh_value = 0;
 
 // rotary encoder
 
@@ -157,9 +156,8 @@ void loop() {
   FastLED.show();
 
   //show segmented display
-  matrix.println(rotary);
-  matrix.writeDisplay();
-
+  show_display();
+  
   //move stepper
   movesteppers();
   
