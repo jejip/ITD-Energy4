@@ -50,7 +50,7 @@ bool stepper2_enable_last = 1;
 #define NUM_LEDS 30                                           // Number of LED's
 
 struct CRGB leds[NUM_LEDS];                                   // Initialize our LED array.
-#define BRIGHTNESS 150                                          // 
+#define BRIGHTNESS 255                                          // 
 
 
 // 7 Segment display
@@ -85,7 +85,7 @@ Adafruit_MotorShield AFMS = Adafruit_MotorShield(); //init the shield
 Adafruit_StepperMotor *myStepper1 = AFMS.getStepper(200, 1);
 Adafruit_StepperMotor *myStepper2 = AFMS.getStepper(200, 2);
 
-// you can change these to DOUBLE or INTERLEAVE or MICROSTEP or INTERLEAVE!
+// you can change these to DOUBLE or SINGLE or MICROSTEP or INTERLEAVE!
 // wrappers for the motor!
 void forwardstep1() {  
   myStepper1->onestep(FORWARD, DOUBLE);
@@ -95,10 +95,10 @@ void backwardstep1() {
 }
 // wrappers for the second motor!
 void forwardstep2() {  
-  myStepper2->onestep(FORWARD, DOUBLE);
+  myStepper2->onestep(FORWARD, INTERLEAVE);
 }
 void backwardstep2() {  
-  myStepper2->onestep(BACKWARD, DOUBLE);
+  myStepper2->onestep(BACKWARD, INTERLEAVE);
 }
 
 // Now we'll wrap the 2 steppers in an AccelStepper object
@@ -131,8 +131,8 @@ void setup() {
   stepper1.setMaxSpeed(1000); //maximum is 1420
   stepper1.setAcceleration(800); //not really a maximum
     
-  stepper2.setMaxSpeed(700);
-  stepper2.setAcceleration(300);
+  stepper2.setMaxSpeed(50);
+  stepper2.setAcceleration(30);
   
 }
 
@@ -144,14 +144,23 @@ void loop() {
   //show LED
 
     switch (led_state) {
+      case 0:
+        fill();
+        break;
       case 1:
-        juggle();
+        sampleled2();
         break;
       case 2:
         sinelon(led_pos, led_hue);
         break;
       case 3:
+        juggle();
+        break;
+      case 4:
         sampleled();
+        break;
+      case 5:
+        confetti();
         break;
     }
 //  sinelon(led_pos, led_hue);

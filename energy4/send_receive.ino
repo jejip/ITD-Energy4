@@ -46,7 +46,8 @@ void readIncoming() {
         break;
       case 8:
         value = Serial.read();
-        display_value = map(value, num_identifiers, 255, 0, 9999); //the display can only display 4 numbers
+        display_value = value;
+        //display_value = map(value, num_identifiers, 255, 0, 9999); //the display can only display 4 numbers
         break;
       case 9:
         value = Serial.read();
@@ -67,15 +68,13 @@ void sendvalues() {
     sensorValue1 = analogRead(sensor1);
 
     // print to the maxpatch
-    Serial.print(sensor0);
+    Serial.print(sensorValue0);
     Serial.print(" ");
-    Serial.print(stepper1_pos);
+    Serial.print(sensorValue1);
     Serial.print(" ");
     Serial.print(stepper2_pos);
     Serial.print(" ");
     Serial.print(led_state);
-    Serial.print(" ");
-    Serial.print(stepper1_enable);
     Serial.print("\n");
     lastTimeSent = millis();
   }

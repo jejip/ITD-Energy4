@@ -17,7 +17,11 @@ void movesteppers() {
       stepper2_enable_last = stepper2_enable; //set the last state to the current state
     }
     
-   // move steppers
+  //set speed
+//  stepper1.setSpeed(stepper1_speed);
+//  stepper2.setSpeed(stepper2_speed);  
+    
+  // move steppers
   
   //move stepper 1
   if (stepper1.distanceToGo() == 0) {//only give off the command to move when the destination has been reached
