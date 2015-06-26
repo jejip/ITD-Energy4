@@ -42,18 +42,15 @@ void readIncoming() {
         break;
       case 7:
         value = Serial.read();
-        led_speed = map(value, num_identifiers, 255, 0, 9999); //the display can only display 4 numbers
-        //TO DO: how to make the transition between numbers smooth?
+        led_state = value - num_identifiers;
         break;
       case 8:
         value = Serial.read();
-        led_hue = map(value, num_identifiers, 255, 0, 255);
+        display_value = map(value, num_identifiers, 255, 0, 9999); //the display can only display 4 numbers
         break;
       case 9:
         value = Serial.read();
-        led_state = value - num_identifiers;
-//        led_state = constrain(led_state, 0, 5); // constrain to 5 modes
-        //led_state = int(value);
+        led_hue = map(value, num_identifiers, 255, 0, 255);
         break;
     }  
   }
@@ -70,6 +67,8 @@ void sendvalues() {
     sensorValue1 = analogRead(sensor1);
 
     // print to the maxpatch
+    Serial.print(sensor0);
+    Serial.print(" ");
     Serial.print(stepper1_pos);
     Serial.print(" ");
     Serial.print(stepper2_pos);

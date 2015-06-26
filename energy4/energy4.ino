@@ -33,6 +33,8 @@ int led_speed = 0;
 int led_hue = 0;
 int led_state = 0;
 
+int display_value = 0;
+
 int num_identifiers = 10; //value for the number of identifiers
 
 bool stepper1_enable_last = 1; //store last value to poll status of steppers, starts as on
@@ -154,9 +156,6 @@ void loop() {
     }
 //  sinelon(led_pos, led_hue);
   FastLED.show();
-
-  //show segmented display
-  show_display();
   
   //move stepper
   movesteppers();
@@ -171,6 +170,9 @@ void loop() {
      {rotary++;}
     encoder.rotate_flag =0;
   }
+  
+  //show segmented display
+  show_display();
   
   //Send values from the analog inputs back
   sendvalues();
