@@ -65,6 +65,9 @@ Adafruit_7segment matrix = Adafruit_7segment();            // attaches I2C
 int rotary = 0;
 int Wh_value = 0;
 
+Adafruit_8x8matrix matrix2 = Adafruit_8x8matrix();
+
+
 // rotary encoder
 
 #include <Encoder.h>                                        //attaches to pin 2 and 3
@@ -119,8 +122,10 @@ void setup() {
   FastLED.setBrightness(BRIGHTNESS);
 
   //attach segment display
-  matrix.begin(0x71); // added a jumper to change the default address
-  pinMode(Wh_led, OUTPUT); //leds which show unit as output
+  matrix.begin(0x71); // add the 7 segment display. added a jumper to change the default address
+  matrix2.begin(0x72);  // add the 8x8 led matrix
+  
+  matrix2.setBrightness(3); //led matrix is wayy brighter than the values
 
   //rotary encoder
   encoder.Timer_init();
@@ -136,6 +141,17 @@ void setup() {
   
 }
 
+//the led data to display the W
+static const uint8_t PROGMEM
+W[] =
+  { B10000001,
+    B10000001,
+    B10000001,
+    B10011001,
+    B10011001,
+    B11011011,
+    B00100100,
+    B00100100 };
 
 void loop() {
   // read the serial input from the max patch
