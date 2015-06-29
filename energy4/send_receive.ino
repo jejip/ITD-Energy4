@@ -16,8 +16,8 @@ void readIncoming() {
         break;
       case 1:
         value = Serial.read();
-        stepper1_pos = map(value, num_identifiers, 255, 10, 2000);
-        //stepper1_pos = int(value);
+//        stepper1_pos = map(value, num_identifiers, 255, 10, 5000);
+        stepper1_pos = int(value);
         break;
       case 2:
         value = Serial.read();

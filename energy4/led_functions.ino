@@ -13,19 +13,19 @@ void showleds()
         black();
         break;
       case 1:
-        fill(led_pos);
+        fill_color(led_pos);
         break;
       case 2:
         sinelon(led_pos);
         break;
       case 3:
-        ledset(led_pos);
+        ledset(rotary);
         break;
       case 4:
-        juggle();
+        juggle(); //it needs to show this in order to show other animations?
         break;
       case 5:
-        confetti();
+        confetti(led_pos);
         break;
     }
 
@@ -43,7 +43,7 @@ void black() //fill all the leds with black
   fill_solid(leds, NUM_LEDS, CHSV(0,0,0));
 }
 
-void fill(int hue) //fill all the leds with black
+void fill_color(int hue) //fill all the leds with black
 {
   fill_solid(leds, NUM_LEDS, CHSV(hue,255,100));
 }
@@ -60,26 +60,39 @@ void circular()
 
 void sinelon(int pos) //move a coloured dots with a trail, with max input value
 {
-  pos = constrain(pos, 0, NUM_LEDS-1);
+  pos = constrain(pos, 0, NUM_LEDS-1); //led_pos goes until 255, so constrain the value first
   fadeToBlackBy( leds, NUM_LEDS, 1);
   leds[pos] += CHSV(120, 255, 255);
 }
 
-void ledset(int pos) { //show a fixed point with a trail
-  int bri = 255;
-  for (pos; pos < 5; pos++){
-    leds[pos] += CHSV(120,255,bri);
-    bri -= 51;
-  }
+
+void ledset(int rotary) { //show a fixed point with a trail
+  //rotary = constrain(rotary, 0, NUM_LEDS-1); //led_pos goes until 255, so constrain the value first
+
+  int hue = 100; //which colour? 0-255
+  int pos; //which position is the handle? 0-23
+  
+  //FastLED.clear();
+//  leds[pos] = CHSV(hue,255,255);
+//  leds[pos+1] = CHSV(hue,255,200);
+//  leds[pos+2] = CHSV(hue,255,150);
+//  leds[pos+3] = CHSV(hue,255,105);
+//  leds[pos+4] = CHSV(hue,255,55);
+//  leds[pos+5] = CHSV(hue,255,30);
+//  leds[pos+6] = CHSV(hue,255,10);
+   fadeToBlackBy( leds, NUM_LEDS, 1);
+   pos = (rotary/10)-(rotary/40);
+   leds[pos] += CHSV(hue,255,255);
+
 }
 
-//show quick flashes of a colour
-void confetti() 
+
+void confetti(int pos) 
 {
   // random colored speckles that blink
   fadeToBlackBy( leds, NUM_LEDS, 5);
-  int pos = random16(NUM_LEDS);
-  leds[pos] += CHSV( 0 + random8(64), 200, 255); //randomize the colour a bit
+  int pos2 = random16(NUM_LEDS);
+  leds[pos2] += CHSV( 0 + random8(pos), 200, 255); //randomize the colour a bit
 }
 
 

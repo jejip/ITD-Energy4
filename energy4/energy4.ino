@@ -47,7 +47,7 @@ int led_speed = 0;
 int led_hue = 0;
 int led_state = 0;
 
-int display_value = 0;
+int display_value = 1; //show display on startup
 
 int num_identifiers = 10; //value for the number of identifiers
 

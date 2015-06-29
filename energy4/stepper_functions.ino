@@ -30,6 +30,9 @@ void movesteppers() {
       stepper1.runSpeedToPosition(); //only runs one way? but this is fine...
     }
 //  stepper1.run();
+
+  //todo: only run if rotary > 0
+  
   
   //move stepper 2
   if (stepper2.distanceToGo() == 0) {
