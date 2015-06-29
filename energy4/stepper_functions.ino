@@ -17,9 +17,7 @@ void movesteppers() {
       stepper2_enable_last = stepper2_enable; //set the last state to the current state
     }
     
-  //set speed
-//  stepper1.setSpeed(stepper1_speed);
-//  stepper2.setSpeed(stepper2_speed);  
+
     
   // move steppers
   
@@ -27,7 +25,11 @@ void movesteppers() {
   if (stepper1.distanceToGo() == 0) {//only give off the command to move when the destination has been reached
       stepper1.moveTo(stepper1_pos);
     }
-  stepper1.run();
+    else {
+      stepper1.setSpeed(stepper1_speed);
+      stepper1.runSpeedToPosition(); //only runs one way? but this is fine...
+    }
+//  stepper1.run();
   
   //move stepper 2
   if (stepper2.distanceToGo() == 0) {
@@ -35,5 +37,8 @@ void movesteppers() {
     }
   stepper2.run();
 
+  //set speed
+//  stepper1.setSpeed(stepper1_speed);
+//  stepper2.setSpeed(stepper2_speed);  
 }
 
