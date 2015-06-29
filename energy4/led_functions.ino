@@ -1,8 +1,51 @@
 //functions for the leds, different effects and patterns for different uses
 
-void fill() //fill all the leds with black
+/*
+ *  main function
+ *
+ */
+
+void showleds()
 {
-  fill_solid(leds, NUM_LEDS, CRGB::Orange);
+  //choose which led animation to show
+  switch (led_state) {
+      case 0:
+        black();
+        break;
+      case 1:
+        fill(led_pos);
+        break;
+      case 2:
+        sinelon(led_pos);
+        break;
+      case 3:
+        ledset(led_pos);
+        break;
+      case 4:
+        juggle();
+        break;
+      case 5:
+        confetti();
+        break;
+    }
+
+  //call FASTled to show animation
+  FastLED.show();
+}
+
+/*
+ *  LED patterns
+ *
+ */
+
+void black() //fill all the leds with black
+{
+  fill_solid(leds, NUM_LEDS, CHSV(0,0,0));
+}
+
+void fill(int hue) //fill all the leds with black
+{
+  fill_solid(leds, NUM_LEDS, CHSV(hue,255,100));
 }
 
 void circular()
@@ -15,14 +58,19 @@ void circular()
 }
 
 
-void sinelon(int pos, int hue) //move a coloured dots with a trail, with max input value
+void sinelon(int pos) //move a coloured dots with a trail, with max input value
 {
+  pos = constrain(pos, 0, NUM_LEDS-1);
   fadeToBlackBy( leds, NUM_LEDS, 1);
   leds[pos] += CHSV(120, 255, 255);
 }
 
-void ledset() { //show a fixed point with a trail
-  //MAKE
+void ledset(int pos) { //show a fixed point with a trail
+  int bri = 255;
+  for (pos; pos < 5; pos++){
+    leds[pos] += CHSV(120,255,bri);
+    bri -= 51;
+  }
 }
 
 //show quick flashes of a colour

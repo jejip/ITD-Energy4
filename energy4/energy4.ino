@@ -1,22 +1,36 @@
-/*
- * Made by Imara Speek, Paul Groenendaal and Aadjan van der Helm
+/* TU Delft
+ * Interactive Technology Design 2015
  *
- * February 26 2015
+ * Group Energy 4
+ * 
+ * June 2015
+ */
+
+
+/*
+ *  Definitions for outgoing values
  *
  */
 
 // Defining the generic analog sensors
 int sensor0 = A0;    // generic sensor 0
 int sensor1 = A1;    // generic sensor 1
-
+int sensor2 = A2;    // generic sensor 2
+int sensor3 = 4;    // digital sensor 3
 
 // values for the sensors
-int sensorValue0 = 0;
-int sensorValue1 = 0;
+int sensorValue0 = 0; //distance sensor
+int sensorValue1 = 0; //radiator pot meter
+int sensorValue2 = 0; //power plug (light)
+bool sensorValue3 = 0; //Light switch
 
 unsigned long lastTimeSent = 0;
 
-//incoming values
+/*
+ *  Definitions for incoming values
+ *
+ */
+ 
 byte incoming = 0;
 byte value = 0;
   
@@ -40,7 +54,10 @@ int num_identifiers = 10; //value for the number of identifiers
 bool stepper1_enable_last = 1; //store last value to poll status of steppers, starts as on
 bool stepper2_enable_last = 1;
 
-// LEDS
+/*
+ *  LEDs
+ *  30 Neopixels with the FASTled library
+ */
 
 #include "FastLED.h"                                          // FastLED library. Preferably the latest copy of FastLED 2.1.
 
@@ -53,7 +70,10 @@ struct CRGB leds[NUM_LEDS];                                   // Initialize our 
 #define BRIGHTNESS 255                                          // 
 
 
-// 7 Segment display
+/*
+ *  Display
+ *  7 segment display and small led matrix by Adafruit on I2C
+ */
 
 #include "Adafruit_LEDBackpack.h"
 #include "Adafruit_GFX.h"
@@ -62,18 +82,37 @@ Adafruit_7segment matrix = Adafruit_7segment();            // attaches I2C
 
 #define Wh_led 4                                            // attaches leds to pin 4
 
-int rotary = 0;
 int Wh_value = 0;
 
 Adafruit_8x8matrix matrix2 = Adafruit_8x8matrix();
 
+//the led data to display the W
+static const uint8_t PROGMEM
+W[] =
+  { B10000001,
+    B10000001,
+    B10000001,
+    B10011001,
+    B10011001,
+    B11011011,
+    B01100110,
+    B00100100 };
 
-// rotary encoder
+
+/*
+ *  Rotary encoder
+ *  Grove rotary encoder
+ */
 
 #include <Encoder.h>                                        //attaches to pin 2 and 3
 #include <TimerOne.h>
 
-// STEPPER MOTORS
+int rotary = 0;
+
+/*
+ *  Stepper motors
+ *  2 stepper motors with the adafruit motor shield
+ */
 
 #include <AccelStepper.h>
 
@@ -109,13 +148,22 @@ AccelStepper stepper1(forwardstep1, backwardstep1);
 AccelStepper stepper2(forwardstep2, backwardstep2);
 
 
+/*
+ *  SETUP
+ *
+ */
+
 void setup() {
+  delay(3000); //some delay to enable re-uploading a sketch  
+  
   // Initiate serial communication
   Serial.begin(115200);
   
   //set analog inputs as inputs
   pinMode(sensor0, INPUT);
   pinMode(sensor1, INPUT);
+  pinMode(sensor2, INPUT);
+  pinMode(sensor3, INPUT_PULLUP); //because it's a switch we need to activate the internal pullup resistor
   
   //attach leds
   LEDS.addLeds<LED_TYPE, LED_DT, COLOR_ORDER>(leds, NUM_LEDS);  // Use this for WS2801 or APA102
@@ -133,7 +181,7 @@ void setup() {
   //setup stepper
   AFMS.begin(); // Start the bottom shield
    
-  stepper1.setMaxSpeed(1000); //maximum is 1420
+  stepper1.setMaxSpeed(1420); //maximum is 1420
   stepper1.setAcceleration(800); //not really a maximum
     
   stepper2.setMaxSpeed(50);
@@ -141,46 +189,18 @@ void setup() {
   
 }
 
-//the led data to display the W
-static const uint8_t PROGMEM
-W[] =
-  { B10000001,
-    B10000001,
-    B10000001,
-    B10011001,
-    B10011001,
-    B11011011,
-    B00100100,
-    B00100100 };
+
+/*
+ *  LOOP
+ *
+ */
 
 void loop() {
   // read the serial input from the max patch
   readIncoming();
   
-  //show LED
-
-    switch (led_state) {
-      case 0:
-        fill();
-        break;
-      case 1:
-        sampleled2();
-        break;
-      case 2:
-        sinelon(led_pos, led_hue);
-        break;
-      case 3:
-        juggle();
-        break;
-      case 4:
-        sampleled();
-        break;
-      case 5:
-        confetti();
-        break;
-    }
-//  sinelon(led_pos, led_hue);
-  FastLED.show();
+  //show LEDs
+  showleds();
   
   //move stepper
   movesteppers();

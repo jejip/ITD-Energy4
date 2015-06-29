@@ -16,12 +16,12 @@ void readIncoming() {
         break;
       case 1:
         value = Serial.read();
-        stepper1_pos = map(value, num_identifiers, 255, 10, 255);
+        stepper1_pos = map(value, num_identifiers, 255, 10, 2000);
         //stepper1_pos = int(value);
         break;
       case 2:
         value = Serial.read();
-        stepper1_speed = int(value);
+        stepper1_speed = map(value, num_identifiers, 255, 0, 250);
         break;
       case 3:
         value = Serial.read();
@@ -30,7 +30,7 @@ void readIncoming() {
         break;
       case 4:
         value = Serial.read();
-        stepper2_pos = map(value, num_identifiers, 255, 0, 200); //maximum position is 200 for opening / closing
+        stepper2_pos = map(value, num_identifiers, 255, 0, 400); //maximum position is 200 for opening / closing
         break;
       case 5:
         value = Serial.read();
@@ -38,7 +38,9 @@ void readIncoming() {
         break;
       case 6:
         value = Serial.read();
-        led_pos = map(value, num_identifiers, 255, 0, NUM_LEDS-1);
+//        led_pos = map(value, num_identifiers, 255, 0, 255); //if we remap this value the position isn't shown accurately`
+        led_pos = int(value);
+        led_pos = led_pos - 10;
         break;
       case 7:
         value = Serial.read();
@@ -64,8 +66,10 @@ void sendvalues() {
   if (millis() > (lastTimeSent + 40))
   {
     // read the value from the sensors:
-    sensorValue0 = analogRead(sensor0);
-    sensorValue1 = analogRead(sensor1);
+    sensorValue0 = analogRead(sensor0); //distance
+    sensorValue1 = analogRead(sensor1); //pot (radiator)
+    sensorValue2 = analogRead(sensor2); //power plug (light)
+    sensorValue3 = digitalRead(sensor3); // light switch
 
     // print to the maxpatch
     Serial.print(sensorValue0);
