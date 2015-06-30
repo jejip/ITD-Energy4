@@ -16,7 +16,7 @@ void readIncoming() {
         break;
       case 1:
         value = Serial.read();
-        stepper1_pos = map(value, num_identifiers, 255, 0, 4000);
+        stepper1_pos = map(value, num_identifiers, 255, 0, stepper1_max);
         break;
       case 2:
         value = Serial.read();
@@ -29,7 +29,7 @@ void readIncoming() {
         break;
       case 4:
         value = Serial.read();
-        stepper2_pos = map(value, num_identifiers, 255, 0, 300); //maximum position is 200 for opening / closing
+        stepper2_pos = map(value, num_identifiers, 255, 0, stepper2_max); //maximum position is 160 for opening / closing
         break;
       case 5:
         value = Serial.read();
@@ -69,6 +69,8 @@ void sendvalues() {
     sensorValue1 = analogRead(sensor1); //pot (radiator)
     sensorValue2 = analogRead(sensor2); //power plug (light)
     sensorValue3 = digitalRead(sensor3); // light switch
+    
+    sensorValue3 = !sensorValue3; // flip value for proper behaviour
     
     stepper1_currentpos = int(stepper1.currentPosition());
     stepper2_currentpos = int(stepper2.currentPosition());

@@ -60,7 +60,7 @@ void confetti(int pos)
 {
   fadeToBlackBy( leds, NUM_LEDS, 5);
   int pos2 = random16(NUM_LEDS);
-  leds[pos2] += CHSV( 0 + random8(pos), 150, 200); //randomize the colour a bit
+  leds[pos2] += CHSV( 0 + random8(pos), 200, 255); //randomize the colour a bit
 }
 
 
@@ -69,7 +69,7 @@ void trail(int pos)
 {
   pos = constrain(pos, 0, NUM_LEDS-1); //led_pos goes until 255, so constrain the value first
   fadeToBlackBy( leds, NUM_LEDS, 1);
-  leds[pos] += CHSV(122, 255, 255); //same colour as the paint
+  leds[pos] += CHSV(100, 230, 255); //same colour as the paint
 }
 
 //fill up the led strip from the top

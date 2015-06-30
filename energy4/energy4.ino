@@ -154,6 +154,9 @@ void backwardstep2() {
 AccelStepper stepper1(forwardstep1, backwardstep1);
 AccelStepper stepper2(forwardstep2, backwardstep2);
 
+// Limit the motors positions to these max values
+int stepper1_max = 4000;
+int stepper2_max = 160;
 
 /*
  *  SETUP
@@ -191,7 +194,7 @@ void setup() {
   stepper1.setMaxSpeed(1420); //maximum is 1420
   stepper1.setAcceleration(800); //not really a maximum, but we don't use acceleration 
     
-  stepper2.setMaxSpeed(50);
+  stepper2.setMaxSpeed(80);
   stepper2.setAcceleration(5);
   
 }

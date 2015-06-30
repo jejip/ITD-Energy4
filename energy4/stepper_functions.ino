@@ -20,7 +20,8 @@ void movesteppers() {
 
   // move steppers
 
-  if (rotary == 0) {
+  //stop when the motor reaches 0 position
+  if (rotary == 0) { 
     stepper1.stop();
     stepper1.setCurrentPosition(0);
   }
