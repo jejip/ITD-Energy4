@@ -24,6 +24,12 @@ int sensorValue1 = 0; //radiator pot meter
 int sensorValue2 = 0; //power plug (light)
 bool sensorValue3 = 0; //Light switch
 
+bool stepper1_ready = 0;
+bool stepper2_ready = 0;
+
+int stepper1_currentpos = 0;
+int stepper2_currentpos = 0;
+
 unsigned long lastTimeSent = 0;
 
 /*
@@ -46,8 +52,9 @@ int led_pos = 0;
 int led_speed = 0;
 int led_hue = 0;
 int led_state = 0;
+int led_state_last = 0;
 
-int display_value = 1; //show display on startup
+int display_value = 11; //show display on startup
 
 int num_identifiers = 10; //value for the number of identifiers
 
@@ -137,10 +144,10 @@ void backwardstep1() {
 }
 // wrappers for the second motor!
 void forwardstep2() {  
-  myStepper2->onestep(FORWARD, INTERLEAVE);
+  myStepper2->onestep(FORWARD, DOUBLE);
 }
 void backwardstep2() {  
-  myStepper2->onestep(BACKWARD, INTERLEAVE);
+  myStepper2->onestep(BACKWARD, DOUBLE);
 }
 
 // Now we'll wrap the 2 steppers in an AccelStepper object
@@ -182,10 +189,10 @@ void setup() {
   AFMS.begin(); // Start the bottom shield
    
   stepper1.setMaxSpeed(1420); //maximum is 1420
-  stepper1.setAcceleration(800); //not really a maximum
+  stepper1.setAcceleration(800); //not really a maximum, but we don't use acceleration 
     
   stepper2.setMaxSpeed(50);
-  stepper2.setAcceleration(30);
+  stepper2.setAcceleration(5);
   
 }
 

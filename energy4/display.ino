@@ -2,12 +2,12 @@
 
 void show_display(){
   //put the rotary value onto the display
-  //Wh_value = rotary*20;
-  Wh_value = rotary;
+  Wh_value = rotary*20;
+//  Wh_value = rotary;
   Wh_value = constrain(Wh_value,0,8000);
   
     //Only turn on display and LEDS when the value to display is > 0
-    if (Wh_value > 0 && display_value == 11){
+    if (Wh_value >= 0 && display_value == 11){
       //put values on the display
 //      matrix.setBrightness(15); // set max brightness
       matrix.println(Wh_value);

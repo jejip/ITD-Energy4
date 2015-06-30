@@ -29,6 +29,12 @@ void showleds()
         break;
     }
 
+  //if led state is changed, clear the leds for new animation
+  if (led_state != led_state_last) { //poll for changes 
+      FastLED.clear();
+      led_state_last = led_state; //set the last state to the current state
+  }
+
   //call FASTled to show animation
   FastLED.show();
 }
@@ -62,28 +68,28 @@ void sinelon(int pos) //move a coloured dots with a trail, with max input value
 {
   pos = constrain(pos, 0, NUM_LEDS-1); //led_pos goes until 255, so constrain the value first
   fadeToBlackBy( leds, NUM_LEDS, 1);
-  leds[pos] += CHSV(120, 255, 255);
+  leds[pos] += CHSV(110, 255, 255);
 }
 
 
 void ledset(int rotary) { //show a fixed point with a trail
   //rotary = constrain(rotary, 0, NUM_LEDS-1); //led_pos goes until 255, so constrain the value first
 
-  int hue = 100; //which colour? 0-255
-  int pos; //which position is the handle? 0-23
+  int hue = 64; //which colour? 0-255
+  int pos; //
   
-  //FastLED.clear();
-//  leds[pos] = CHSV(hue,255,255);
-//  leds[pos+1] = CHSV(hue,255,200);
-//  leds[pos+2] = CHSV(hue,255,150);
-//  leds[pos+3] = CHSV(hue,255,105);
-//  leds[pos+4] = CHSV(hue,255,55);
-//  leds[pos+5] = CHSV(hue,255,30);
-//  leds[pos+6] = CHSV(hue,255,10);
+   pos = (rotary/10)-(rotary/40); //this keeps the last led at the top
+   pos = constrain(pos, 0, NUM_LEDS-1);
+   
    fadeToBlackBy( leds, NUM_LEDS, 1);
-   pos = (rotary/10)-(rotary/40);
-   leds[pos] += CHSV(hue,255,255);
-
+   FastLED.clear();
+   
+   //a loop to show all the leds <= pos
+   for (int i = 0; i <= pos; i++) {
+    leds[i] += CHSV(hue,255,255); //add the last led to show 
+   }
+    
+   
 }
 
 

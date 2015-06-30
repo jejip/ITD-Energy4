@@ -16,8 +16,7 @@ void readIncoming() {
         break;
       case 1:
         value = Serial.read();
-//        stepper1_pos = map(value, num_identifiers, 255, 10, 5000);
-        stepper1_pos = int(value);
+        stepper1_pos = map(value, num_identifiers, 255, 0, 4000);
         break;
       case 2:
         value = Serial.read();
@@ -30,11 +29,11 @@ void readIncoming() {
         break;
       case 4:
         value = Serial.read();
-        stepper2_pos = map(value, num_identifiers, 255, 0, 400); //maximum position is 200 for opening / closing
+        stepper2_pos = map(value, num_identifiers, 255, 0, 300); //maximum position is 200 for opening / closing
         break;
       case 5:
         value = Serial.read();
-        stepper2_speed = int(value);
+        stepper2_speed = map(value, num_identifiers, 255, 0, 30);
         break;
       case 6:
         value = Serial.read();
@@ -70,15 +69,28 @@ void sendvalues() {
     sensorValue1 = analogRead(sensor1); //pot (radiator)
     sensorValue2 = analogRead(sensor2); //power plug (light)
     sensorValue3 = digitalRead(sensor3); // light switch
+    
+    stepper1_currentpos = int(stepper1.currentPosition());
+    stepper2_currentpos = int(stepper2.currentPosition());
 
     // print to the maxpatch
     Serial.print(sensorValue0);
     Serial.print(" ");
     Serial.print(sensorValue1);
     Serial.print(" ");
-    Serial.print(stepper2_pos);
+    Serial.print(sensorValue2);
     Serial.print(" ");
-    Serial.print(led_state);
+    Serial.print(sensorValue3);
+    Serial.print(" ");
+    Serial.print(rotary);
+    Serial.print(" ");
+    Serial.print(stepper1_ready);
+    Serial.print(" ");
+    Serial.print(stepper1_currentpos);
+    Serial.print(" ");
+    Serial.print(stepper2_ready);
+    Serial.print(" ");
+    Serial.print(stepper2_currentpos);
     Serial.print("\n");
     lastTimeSent = millis();
   }
