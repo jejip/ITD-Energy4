@@ -47,12 +47,16 @@ void readIncoming() {
         break;
       case 8:
         value = Serial.read();
-        display_value = value;
+        if (value <= 11)
+          display_value = value;
+        else
+          save_rotary = value;
         //display_value = map(value, num_identifiers, 255, 0, 9999); //the display can only display 4 numbers
         break;
       case 9:
         value = Serial.read();
-        led_hue = map(value, num_identifiers, 255, 0, 255);
+        led_hue = int(value);
+//        led_hue = map(value, num_identifiers, 255, 0, 255);
         break;
     }  
   }
@@ -93,6 +97,8 @@ void sendvalues() {
     Serial.print(stepper2_ready);
     Serial.print(" ");
     Serial.print(stepper2_currentpos);
+    Serial.print(" ");
+    Serial.print(stepper1.distanceToGo());
     Serial.print("\n");
     lastTimeSent = millis();
   }

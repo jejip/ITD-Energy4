@@ -23,5 +23,9 @@ void show_display(){
       matrix.writeDisplay();
       matrix2.writeDisplay();
     } 
+
+    if (save_rotary == 12){ //when save rotary is called
+      display_value_last = Wh_value;
+    }
   
 }

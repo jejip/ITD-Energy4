@@ -54,12 +54,17 @@ int led_hue = 0;
 int led_state = 0;
 int led_state_last = 0;
 
-int display_value = 11; //show display on startup
+int display_value = 0; //put in 11 to show display on startup
 
 int num_identifiers = 10; //value for the number of identifiers
 
 bool stepper1_enable_last = 1; //store last value to poll status of steppers, starts as on
 bool stepper2_enable_last = 1;
+
+int save_rotary = 0; //receive value to save the input of rotary before countdown starts
+int display_value_last = 0; //sotres the last display value
+
+bool calibrate_button = 0;
 
 /*
  *  LEDs
@@ -206,6 +211,11 @@ void setup() {
  */
 
 void loop() {
+  calibrate_button = digitalRead(8); //read the calibrate switch on port 8
+  if (!calibrate_button){
+    calibrate();
+  }
+  
   // read the serial input from the max patch
   readIncoming();
   
@@ -231,5 +241,10 @@ void loop() {
   
   //Send values from the analog inputs back
   sendvalues();
+
+  //reset rotary value to 0 when it receives the incoming value
+  if (led_hue == 11){
+    rotary = 0;
+  }
 
 }

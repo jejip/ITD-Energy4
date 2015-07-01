@@ -23,7 +23,7 @@ void movesteppers() {
   //stop when the motor reaches 0 position
   if (rotary == 0) { 
     stepper1.stop();
-    stepper1.setCurrentPosition(0);
+//    stepper1.setCurrentPosition(0);
   }
   
   //move stepper 1
@@ -34,10 +34,17 @@ void movesteppers() {
     else {
       stepper1_ready = 0;
       stepper1.setSpeed(stepper1_speed);
-      stepper1.runSpeedToPosition(); //only runs one way? but this is fine...
+      //stepper1.runSpeedToPosition(); //only runs one way? but this is fine...
+      stepper1.runSpeed(); //we don't need to know position, it will turn off once it's at 0 anyway.
     }
-//  stepper1.run();
+//  stepper1.run(); 
 
+
+  // use runspeed instead of run to position, to get it to just move until it reaches 0
+//  if (stepper1_pos > 1){ //if it received the signal to move
+//    stepper1.setSpeed(stepper1_speed);
+//    stepper1.runSpeed();
+//  }
 
   //todo: only run if rotary > 0, use stepper1.stop()
   //todo: when rotary is 0, do stepper1.setCurrentPosition()  (side effect: puts motor speed to 0)
